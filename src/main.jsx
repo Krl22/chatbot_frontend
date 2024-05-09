@@ -7,7 +7,7 @@ import { AuthProvider } from "@asgardeo/auth-react";
 const SERVER_URL =
   process.env.NODE_ENV === "development"
     ? "http://localhost:5173" // URL de tu frontend local en desarrollo
-    : "https://83667c71-6cc9-4f96-924d-7d36000130c7.e1-us-cdp-2.choreoapps.dev"; // URL de tu frontend de Choreo en producción
+    : "https://05d7ec40-014c-4421-b80a-a5a6e38b89bd.e1-us-cdp-2.choreoapps.dev/"; // URL de tu frontend de Choreo en producción
 
 const config = {
   signInRedirectURL: SERVER_URL,
