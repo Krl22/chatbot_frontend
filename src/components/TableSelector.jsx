@@ -11,7 +11,7 @@ function TableSelector() {
   useEffect(() => {
     const fetchTables = async () => {
       try {
-        const response = await api.get(`/tablas/${state.username}`);
+        const response = await api.get(`/user-tables/${state.username}`);
         if (response.status === 200) {
           setTables(response.data);
         } else {
@@ -40,7 +40,9 @@ function TableSelector() {
     localStorage.setItem("selectedTable", tableName);
 
     try {
-      const response = await api.get(`/datos/${state.username}/${tableName}`);
+      const response = await api.get(
+        `/show-table/${state.username}/${tableName}`
+      );
       if (response.status === 200) {
         setTableData(response.data);
         localStorage.setItem("tableData", JSON.stringify(response.data));
@@ -57,7 +59,7 @@ function TableSelector() {
 
   const handleTableDelete = async () => {
     try {
-      await api.delete(`/tablas/${state.username}/${selectedTable}`);
+      await api.delete(`/delete-table/${state.username}/${selectedTable}`);
       const updatedTables = tables.filter((table) => table !== selectedTable);
       setTables(updatedTables);
       setSelectedTable("");

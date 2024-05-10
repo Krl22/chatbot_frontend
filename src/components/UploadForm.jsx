@@ -24,7 +24,7 @@ function UploadForm() {
 
     try {
       const response = await api.post(
-        `/upload/?user_id=${state.username}&table_name=${tableName}`,
+        `/upload-csv/?username=${state.username}`,
         formData
       );
 
