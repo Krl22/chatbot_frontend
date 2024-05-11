@@ -17,11 +17,10 @@ const Notes = () => {
 
   const fetchNotes = async () => {
     try {
-      const response = await api.get(
-        `/notes/?user_id=${encodeURIComponent(state.username)}`
-      ); // Usa el módulo de API para hacer la solicitud
+      const response = await api.get(`/notes/${state.username}`); // Usa el módulo de API para hacer la solicitud
       if (response.status === 200) {
-        setNotes(response.data);
+        console.log(response.data.notes);
+        setNotes(response.data.notes);
       } else {
         console.error("Error al obtener las notas:", response.statusText);
       }
@@ -37,7 +36,7 @@ const Notes = () => {
       if (response.status === 200) {
         setNewNote({ title: "", description: "" });
         fetchNotes();
-        // window.location.reload();
+        window.location.reload();
       } else {
         console.error("Error al crear la nota:", response.statusText);
       }
@@ -128,7 +127,6 @@ const Notes = () => {
                 </form>
                 <div className="modal-action">
                   <form method="dialog">
-                    {/* if there is a button in form, it will close the modal */}
                     <button className="btn">Close</button>
                   </form>
                 </div>
@@ -137,23 +135,24 @@ const Notes = () => {
           </div>
         </div>
         <div className="flex flex-wrap m-6">
-          {notes.map((note) => (
-            <div key={note.id} className="w-1/6 m-4 rounded-lg shadow-lg">
+          {notes.map((note, index) => (
+            <div key={index} className="w-1/6 m-4 rounded-lg shadow-lg">
               <input
                 type="checkbox"
-                checked={note.status}
+                checked={note[4]} // Cambiado a note[4] para reflejar el estado en la última posición del array
                 className="checkbox"
-                onChange={() => handleCheckboxChange(note.id, note.status)}
+                onChange={() => handleCheckboxChange(note[0], note[4])} // Cambiado a note[0] para reflejar el id en la primera posición del array
               />
               <h1 className="mb-4 text-2xl text-center truncate text-cyan-900">
-                {note.title}
+                {note[1]} {/* Título de la nota */}
               </h1>
               <div className="h-32 p-2 m-4 overflow-y-auto rounded-lg bg-amber-200 ">
-                <p className="whitespace-normal">{note.description}</p>
+                <p className="whitespace-normal">{note[2]}</p>{" "}
+                {/* Descripción de la nota */}
               </div>
               <div className="flex justify-center p-2">
                 <button
-                  onClick={() => handleNoteDelete(note.id)}
+                  onClick={() => handleNoteDelete(note[0])} // Cambiado a note[0] para reflejar el id en la primera posición del array
                   className="p-2 mt-2 font-semibold text-white rounded-lg bg-rose-900"
                 >
                   Delete

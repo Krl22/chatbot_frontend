@@ -13,7 +13,7 @@ function TableSelector() {
       try {
         const response = await api.get(`/user-tables/${state.username}`);
         if (response.status === 200) {
-          setTables(response.data);
+          setTables(response.data.tables);
         } else {
           console.error("Error al obtener las tablas:", response.statusText);
         }
@@ -27,25 +27,18 @@ function TableSelector() {
 
   useEffect(() => {
     const storedSelectedTable = localStorage.getItem("selectedTable");
-    const storedTableData = localStorage.getItem("tableData");
-    if (storedSelectedTable && storedTableData) {
+    if (storedSelectedTable && tables.includes(storedSelectedTable)) {
       setSelectedTable(storedSelectedTable);
-      setTableData(JSON.parse(storedTableData));
     }
-  }, []);
+  }, [tables]);
 
-  const handleTableChange = async (event) => {
-    const tableName = event.target.value;
-    setSelectedTable(tableName);
-    localStorage.setItem("selectedTable", tableName);
-
+  const fetchTableData = async (tableName) => {
     try {
       const response = await api.get(
         `/show-table/${state.username}/${tableName}`
       );
       if (response.status === 200) {
-        setTableData(response.data);
-        localStorage.setItem("tableData", JSON.stringify(response.data));
+        setTableData(response.data.table_data);
       } else {
         console.error(
           "Error al obtener los datos de la tabla:",
@@ -57,6 +50,18 @@ function TableSelector() {
     }
   };
 
+  useEffect(() => {
+    if (selectedTable) {
+      fetchTableData(selectedTable);
+      localStorage.setItem("selectedTable", selectedTable);
+    }
+  }, [selectedTable]);
+
+  const handleTableChange = (event) => {
+    const tableName = event.target.value;
+    setSelectedTable(tableName);
+  };
+
   const handleTableDelete = async () => {
     try {
       await api.delete(`/delete-table/${state.username}/${selectedTable}`);
@@ -64,6 +69,7 @@ function TableSelector() {
       setTables(updatedTables);
       setSelectedTable("");
       setTableData([]);
+      localStorage.removeItem("selectedTable");
     } catch (error) {
       console.error("Error al eliminar la tabla:", error);
     }
@@ -90,31 +96,31 @@ function TableSelector() {
               Data table: {selectedTable}
             </h2>
             <div className="flex items-center justify-center w-1/5">
-              <a
+              <button
                 className="p-2 mt-2 font-semibold text-white rounded-lg cursor-pointer bg-rose-900"
                 onClick={handleTableDelete}
               >
                 delete
-              </a>
+              </button>
             </div>
           </>
         )}
       </div>
       <div className="overflow-x-auto">
-        <table className="table table-xs">
+        <table className="table border border-collapse border-gray-400">
           <thead>
             <tr>
               {tableData.length > 0 &&
-                Object.keys(tableData[0]).map((key, index) => (
-                  <th key={index}>{key}</th>
+                tableData[0].map((columnName, index) => (
+                  <th key={index}>{columnName}</th>
                 ))}
             </tr>
           </thead>
           <tbody>
             {tableData.map((row, rowIndex) => (
               <tr key={rowIndex} className="hover">
-                {Object.values(row).map((value, colIndex) => (
-                  <td key={colIndex}>{value}</td>
+                {row.map((cell, cellIndex) => (
+                  <td key={cellIndex}>{cell}</td>
                 ))}
               </tr>
             ))}
