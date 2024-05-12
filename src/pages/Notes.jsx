@@ -120,7 +120,7 @@ const Notes = () => {
                   </div>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                    className="px-4 py-2 text-white transition duration-300 rounded bg-rose-900 hover:bg-rose-800 focus:outline-none focus:bg-rose-800"
                   >
                     Crear Nota
                   </button>

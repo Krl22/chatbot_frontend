@@ -5,15 +5,10 @@ import api from "../api"; // Importa el módulo de API
 function UploadForm() {
   const { state } = useAuthContext();
   const [file, setFile] = useState(null);
-  const [tableName, setTableName] = useState("");
   const [message, setMessage] = useState("");
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
-  };
-
-  const handleTableNameChange = (event) => {
-    setTableName(event.target.value);
   };
 
   const handleSubmit = async (event) => {
@@ -29,8 +24,10 @@ function UploadForm() {
       );
 
       if (response.status === 200) {
-        const data = await response.json();
-        setMessage(data.mensaje);
+        // Utiliza response.data en lugar de response.json()
+        const data = response.data;
+        console.log(data);
+        setMessage(data.message);
         window.location.reload();
       } else {
         setMessage("Ocurrió un error al cargar el archivo.");
@@ -43,11 +40,11 @@ function UploadForm() {
   };
 
   return (
-    <div className="max-w-md p-6 mx-auto bg-white rounded-md shadow-md">
+    <div className="max-w-md p-6 mx-auto text-black bg-white rounded-md shadow-md">
       <h2 className="mb-4 text-2xl font-semibold">Subir Archivo CSV</h2>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
-          <label className="block">Seleccione un archivo CSV:</label>
+          <label className="block ">Seleccione un archivo CSV:</label>
           <input
             className="w-full p-2 border border-gray-300"
             type="file"
@@ -55,17 +52,9 @@ function UploadForm() {
             onChange={handleFileChange}
           />
         </div>
-        <div>
-          <label className="block">Nombre de la tabla:</label>
-          <input
-            className="w-full p-2 border border-gray-300"
-            type="text"
-            value={tableName}
-            onChange={handleTableNameChange}
-          />
-        </div>
+
         <button
-          className="px-4 py-2 text-white rounded bg-rose-900 hover:bg-blue-600"
+          className="px-4 py-2 text-white transition duration-300 rounded bg-rose-900 hover:bg-rose-800 focus:outline-none focus:bg-rose-800"
           type="submit"
         >
           Subir Archivo

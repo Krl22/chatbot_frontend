@@ -6,6 +6,7 @@ function TableSelector() {
   const { state } = useAuthContext();
   const [tables, setTables] = useState([]);
   const [selectedTable, setSelectedTable] = useState("");
+  const [tableHeaders, setTableHeaders] = useState([]); // Agrega estado para los encabezados
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
@@ -38,7 +39,9 @@ function TableSelector() {
         `/show-table/${state.username}/${tableName}`
       );
       if (response.status === 200) {
-        setTableData(response.data.table_data);
+        const { headers, table_data } = response.data;
+        setTableHeaders(headers); // Establece los encabezados
+        setTableData(table_data);
       } else {
         console.error(
           "Error al obtener los datos de la tabla:",
@@ -68,6 +71,7 @@ function TableSelector() {
       const updatedTables = tables.filter((table) => table !== selectedTable);
       setTables(updatedTables);
       setSelectedTable("");
+      setTableHeaders([]); // Limpiar encabezados
       setTableData([]);
       localStorage.removeItem("selectedTable");
     } catch (error) {
@@ -110,15 +114,14 @@ function TableSelector() {
         <table className="table border border-collapse border-gray-400">
           <thead>
             <tr>
-              {tableData.length > 0 &&
-                tableData[0].map((columnName, index) => (
-                  <th key={index}>{columnName}</th>
-                ))}
+              {tableHeaders.map((columnName, index) => (
+                <th key={index}>{columnName}</th>
+              ))}
             </tr>
           </thead>
           <tbody>
             {tableData.map((row, rowIndex) => (
-              <tr key={rowIndex} className="hover">
+              <tr key={rowIndex}>
                 {row.map((cell, cellIndex) => (
                   <td key={cellIndex}>{cell}</td>
                 ))}
