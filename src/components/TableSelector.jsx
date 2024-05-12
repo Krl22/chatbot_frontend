@@ -113,7 +113,7 @@ function TableSelector() {
       <div className="overflow-x-auto">
         <table className="table border border-collapse border-gray-400">
           <thead>
-            <tr>
+            <tr className="text-xl">
               {tableHeaders.map((columnName, index) => (
                 <th key={index}>{columnName}</th>
               ))}
@@ -121,7 +121,7 @@ function TableSelector() {
           </thead>
           <tbody>
             {tableData.map((row, rowIndex) => (
-              <tr key={rowIndex}>
+              <tr key={rowIndex} className="hover">
                 {row.map((cell, cellIndex) => (
                   <td key={cellIndex}>{cell}</td>
                 ))}
