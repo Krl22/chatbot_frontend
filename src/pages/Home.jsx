@@ -4,7 +4,7 @@ import Notes from "./Notes";
 import Tables from "./Tables";
 
 function Home() {
-  // Obtener el estado inicial de selectedTab del localStorage
+  // Estado para almacenar el índice del botón seleccionado
   const [selectedTab, setSelectedTab] = useState(
     localStorage.getItem("selectedTab") || "MyTables"
   );
@@ -21,7 +21,9 @@ function Home() {
           <li>
             <div
               onClick={() => setSelectedTab("MyTables")}
-              className="tooltip tooltip-right"
+              className={`tooltip tooltip-right ${
+                selectedTab === "MyTables" ? "bg-slate-700 text-white" : ""
+              }`}
               data-tip="here you can upload tables"
             >
               <a>My Tables</a>
@@ -30,7 +32,9 @@ function Home() {
           <li>
             <div
               onClick={() => setSelectedTab("Notes")}
-              className="tooltip tooltip-right"
+              className={`tooltip tooltip-right ${
+                selectedTab === "Notes" ? "bg-slate-700 text-white" : ""
+              }`}
               data-tip="add notes!"
             >
               <a>Notes</a>
@@ -39,7 +43,9 @@ function Home() {
           <li>
             <div
               onClick={() => setSelectedTab("Chat")}
-              className="tooltip tooltip-right"
+              className={`tooltip tooltip-right ${
+                selectedTab === "Chat" ? " text-white bg-slate-700" : ""
+              }`}
               data-tip="chat with the AI!"
             >
               <a>Chat</a>

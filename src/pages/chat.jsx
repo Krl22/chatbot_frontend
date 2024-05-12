@@ -7,7 +7,17 @@ const Chat = () => {
   const [messages, setMessages] = useState([
     {
       content:
-        "Hi I'm you bot assistant and I'm able to read tables a notes to help you better.",
+        "Hi I'm you bot assistant and I'm able to read all your tables and notes to get a better answer!.",
+      className: "chat chat-start",
+    },
+    {
+      content:
+        "You can uncheck your notes if you don't want me to consider them in my responses.",
+      className: "chat chat-start",
+    },
+    {
+      content:
+        "Press the restart button if you want to start the conversation over",
       className: "chat chat-start",
     },
   ]);
@@ -104,7 +114,7 @@ const Chat = () => {
       <div className="relative w-5/6 mb-20 bg-blue-300 shadow-2xl rounded-3xl h-3/4">
         <div className="sticky top-0 z-10 flex justify-between p-4 px-8 bg-blue-600 shadow-md rounded-t-3xl">
           <div className="py-4 text-center">
-            <h2 className="text-3xl font-semibold text-white ">CCAB-Bot</h2>
+            <h2 className="text-3xl font-semibold text-white ">Analyst Bot</h2>
           </div>
           <div className="flex items-center justify-center">
             <a
